@@ -28,9 +28,9 @@ app.use(express.static("public"));
 })();
 
 const chatSchema = new mongoose.Schema({
-    user: { type: String, index: true },
+    user: String,
     message: String,
-    timestamp: { type: Date, default: Date.now }
+    timestamp: Date
 });
 
 const History = mongoose.model('History', chatSchema);
@@ -44,16 +44,23 @@ async function saveMessage(user, message) {
     }
 }
 
+
 io.on('connection', async (socket) => {
 
-    try {
-        const oldConversation = await History.find();
-        socket.emit('getheader', oldConversation);
-    } catch (error) {
-        console.error(error);
-    }
+    let userOld = await History.find({
+        user: 'User'
+    });
+
+    let aiOld = await History.find({
+        user: 'Ai'
+    });
+
+  
+    socket.emit('getheader', userOld);
+    socket.emit('receive', aiOld);
 
     socket.on('send', async (msg) => {
+
         try {
             const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
@@ -65,17 +72,26 @@ io.on('connection', async (socket) => {
                     },
                     {
                         role: "model",
-                        parts: "Hello, how can I help you?",
+                        parts: "Hello, how can i help you?",
                     },
                 ],
                 generationConfig: {
-                    maxOutputTokens: 2048,
+                    maxOutputTokens: 100,
                 },
             });
 
             await saveMessage('User', msg);
-            const head = await History.find();
-            socket.emit('getheader', head);
+
+            let updatedUser = await History.find({
+                user: 'User'
+            });
+
+            let latestUser = updatedUser.filter(a => !userOld.find(b => b.id === a.id));
+
+            socket.emit('getheader', latestUser);
+
+            userOld = updatedUser;
+
 
             const result = await chat.sendMessageStream(msg);
             let text = '';
@@ -85,16 +101,24 @@ io.on('connection', async (socket) => {
             }
 
             await saveMessage('Ai', text);
-            const updatedConversation = await History.find();
-            socket.emit('receive', { conversation: updatedConversation });
+
+            let updatedAi = await History.find({
+                user: 'Ai'
+            });
+
+            let latestAi = updatedAi.filter(a => !aiOld.find(b => b.id === a.id));
+
+            socket.emit('receive', latestAi);
+
+            aiOld = updatedAi;
+
 
         } catch (error) {
-            console.error(error);
+            console.log(error)
             socket.emit("receive", error.message);
         }
     });
 });
-
 
 app.get('/', async (req, res) => {
     res.render("index");
