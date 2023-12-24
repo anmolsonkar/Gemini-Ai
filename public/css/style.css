@@ -120,6 +120,7 @@ div>div {
     display: flex;
     align-items: center;
     padding: 5px;
+    padding-left: 10px;
     margin-left: 1rem;
     background-color: #F1F3F4;
     color: #131313;
@@ -129,7 +130,7 @@ div>div {
 }
 
 #show {
-    margin-left: 1.37rem;
+    margin-left: 1.75rem;
     width: 100%;
 }
 

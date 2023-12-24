@@ -18,6 +18,8 @@ function updateInputStatus() {
     } else {
         button.disabled = true;
         button.style.backgroundColor = "grey";
+        button.style.border = "1px solid grey";
+
     }
 }
 
@@ -83,3 +85,6 @@ function displayMessages(messages) {
 
     main.scrollTop = main.scrollHeight;
 }
+
+
+

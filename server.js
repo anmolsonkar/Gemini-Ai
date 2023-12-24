@@ -44,6 +44,34 @@ async function saveMessage(user, message) {
     }
 }
 
+const conversationHistory = [];
+
+const MAX_CONVERSATION_HISTORY_SIZE = 50;
+
+if (conversationHistory.length > MAX_CONVERSATION_HISTORY_SIZE) {
+    conversationHistory.shift();
+}
+
+
+
+(async () => {
+    const messages = await History.find();
+    for (let i = 0; i < messages.length; i++) {
+        if (messages[i].user === 'User') {
+            conversationHistory.push({
+                role: 'user',
+                parts: messages[i].message
+            });
+        } else {
+            conversationHistory.push({
+                role: 'model',
+                parts: messages[i].message
+            });
+        }
+    }
+})();
+
+
 io.on('connection', async (socket) => {
 
     try {
@@ -53,23 +81,15 @@ io.on('connection', async (socket) => {
         console.error(error);
     }
 
+
+
     socket.on('send', async (msg) => {
         try {
             const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
             const chat = model.startChat({
-                history: [
-                    {
-                        role: "user",
-                        parts: "Hi",
-                    },
-                    {
-                        role: "model",
-                        parts: "Hello, how can I help you?",
-                    },
-                ],
+                history: conversationHistory,
                 generationConfig: {
-                    maxOutputTokens: 2048,
+                    // maxOutputTokens: 10,
                 },
             });
 
@@ -89,8 +109,8 @@ io.on('connection', async (socket) => {
             socket.emit('receive', { conversation: updatedConversation });
 
         } catch (error) {
-            console.error(error);
-            socket.emit("receive", error.message);
+            console.log(error)
+            socket.emit("receive", { conversation: error.message });
         }
     });
 });
@@ -103,3 +123,5 @@ app.get('/', async (req, res) => {
 server.listen(3000, () => {
     console.log("Server is listening on port 3000");
 });
+
+
