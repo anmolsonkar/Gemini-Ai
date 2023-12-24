@@ -85,14 +85,16 @@ io.on('connection', async (socket) => {
 
     socket.on('send', async (msg) => {
         try {
+
+            socket.emit('loading', true);
+
             const model = genAI.getGenerativeModel({ model: "gemini-pro" });
             const chat = model.startChat({
                 history: conversationHistory,
                 generationConfig: {
-                    // maxOutputTokens: 10,
+                    maxOutputTokens: 1024,
                 },
             });
-
             await saveMessage('User', msg);
             const head = await History.find();
             socket.emit('getheader', head);
@@ -111,6 +113,9 @@ io.on('connection', async (socket) => {
         } catch (error) {
             console.log(error)
             socket.emit("receive", { conversation: error.message });
+        }
+        finally {
+            socket.emit('loading', false);
         }
     });
 });
