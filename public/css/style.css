@@ -135,10 +135,9 @@ div>div {
     width: 100%;
     padding: 5px;
     justify-content: start;
-    align-items: center;
+    align-items: start;
     margin-top: 1rem;
 }
-
 
 .box1>img {
     border-radius: 50%;
@@ -146,6 +145,11 @@ div>div {
     height: 2.5rem;
     margin-right: .7rem;
 
+}
+
+.box1>div {
+    display: flex;
+    align-self: center;
 }
 
 .box2 {
@@ -317,7 +321,7 @@ button {
         z-index: 1;
         background-color: white;
         color: #131314;
-        width: 18.5vw;
+        width: 16rem;
         border-radius: 1rem;
         padding-left: 1rem;
         cursor: pointer;
@@ -355,7 +359,7 @@ button {
         margin: 0;
         margin-top: -0.7rem;
         margin-right: 1rem;
-        width: 71vw;
+        width: 48vw;
         margin-left: 1rem;
     }
 
@@ -368,6 +372,59 @@ button {
         margin-top: 3.6rem;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     }
+}
+
+@media screen and (min-width:800px) {
+    #input {
+
+        width: 50vw;
+
+    }
+}
+
+@media screen and (min-width:834px) {
+    #input {
+
+        width: 52.1vw;
+
+    }
+}
+
+@media screen and (min-width:1024px) {
+    #settings {
+        width: 24.5vw;
+    }
+
+    #input {
+        width: 61.2vw;
+    }
+
+
+}
+
+@media screen and (min-width:1280px) {
+    #settings {
+        width: 19.5vw;
+    }
+
+    #input {
+        width: 69vw;
+    }
+
+
+}
+
+
+@media screen and (min-width:1440px) {
+    #settings {
+        width: 18.75vw;
+    }
+
+    #input {
+        width: 71.1vw;
+    }
+
+
 }
 
 @media screen and (min-width:2560px) {

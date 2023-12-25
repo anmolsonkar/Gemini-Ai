@@ -52,7 +52,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     input.addEventListener('input', autoExpand);
+
+
 });
+
+
 
 function updateInputStatus() {
     if (input.value.trim() !== "") {
@@ -96,10 +100,12 @@ const main = document.querySelector("main");
 socket.on("getheader", (history) => {
 
     displayMessages(history);
+
 });
 
 socket.on("receive", (data) => {
     displayMessages(data.conversation);
+
 
 });
 
@@ -117,14 +123,14 @@ function displayMessages(messages) {
 
         const messageContent = isUser
             ? `<img src="${imgSrc}" alt="${altText}">
-               <div id="msgheader">${item.message}</div>`
+               <div><pre>${item.message}</pre></div>`
             : `<img src="${imgSrc}" alt="${altText}">
                <div id="show">${marked.parse(item.message)}</div>`;
 
         messageDiv.innerHTML = messageContent;
         main.appendChild(messageDiv);
-    });
 
+    });
     main.scrollTop = main.scrollHeight;
 }
 
@@ -133,12 +139,14 @@ function displayMessages(messages) {
 socket.on('loading', (isLoading) => {
     loadingElement.classList.toggle('loading', isLoading);
     if (isLoading) {
+        input.style.height = "auto"
         input.setAttribute('placeholder', 'Generating...');
         input.disabled = true;
     }
     else {
         input.setAttribute('placeholder', 'Ask me anything...');
         input.disabled = false;
+        input.focus();
     }
 });
 

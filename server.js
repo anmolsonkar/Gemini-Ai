@@ -8,7 +8,7 @@ const io = socketIO(server);
 require('dotenv').config();
 
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
 const mongoose = require('mongoose');
@@ -19,7 +19,7 @@ app.use(express.static("public"));
 
 (async () => {
     try {
-        const result = await mongoose.connect("mongodb+srv://anmolsonkar:Anmolmongo2023@anmoldb.ta9zg8t.mongodb.net/Gemini-Ai");
+        await mongoose.connect("mongodb+srv://anmolsonkar:Anmolmongo2023@anmoldb.ta9zg8t.mongodb.net/Gemini-Ai");
         console.log("Connected")
     } catch (error) {
         console.log(error)
@@ -44,12 +44,12 @@ async function saveMessage(user, message) {
     }
 }
 
-const conversationHistory = [];
+const history = [];
 
 const MAX_CONVERSATION_HISTORY_SIZE = 50;
 
-if (conversationHistory.length > MAX_CONVERSATION_HISTORY_SIZE) {
-    conversationHistory.shift();
+if (history.length > MAX_CONVERSATION_HISTORY_SIZE) {
+    history.shift();
 }
 
 
@@ -58,12 +58,12 @@ if (conversationHistory.length > MAX_CONVERSATION_HISTORY_SIZE) {
     const messages = await History.find();
     for (let i = 0; i < messages.length; i++) {
         if (messages[i].user === 'User') {
-            conversationHistory.push({
+            history.push({
                 role: 'user',
                 parts: messages[i].message
             });
         } else {
-            conversationHistory.push({
+            history.push({
                 role: 'model',
                 parts: messages[i].message
             });
@@ -81,25 +81,51 @@ io.on('connection', async (socket) => {
         console.error(error);
     }
 
-
-
     socket.on('send', async (msg) => {
         try {
 
             socket.emit('loading', true);
 
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-            const chat = model.startChat({
-                history: conversationHistory,
-                generationConfig: {
-                    maxOutputTokens: 1024,
+            const generationConfig = {
+                temperature: 0.7,
+                topK: 1,
+                topP: 1,
+                maxOutputTokens: 1024,
+            };
+
+            const safetySettings = [
+                {
+                    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+                    threshold: HarmBlockThreshold.BLOCK_NONE,
                 },
+                {
+                    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                    threshold: HarmBlockThreshold.BLOCK_NONE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                    threshold: HarmBlockThreshold.BLOCK_NONE,
+                },
+                {
+                    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                    threshold: HarmBlockThreshold.BLOCK_NONE,
+                },
+            ];
+
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+            const chat = model.startChat({
+                generationConfig,
+                safetySettings,
+                history: history,
             });
+
             await saveMessage('User', msg);
             const head = await History.find();
             socket.emit('getheader', head);
 
             const result = await chat.sendMessageStream(msg);
+
             let text = '';
             for await (const chunk of result.stream) {
                 const chunkText = chunk.text();
@@ -111,10 +137,11 @@ io.on('connection', async (socket) => {
             socket.emit('receive', { conversation: updatedConversation });
 
         } catch (error) {
-            console.log(error)
-            socket.emit("receive", { conversation: error.message });
-        }
-        finally {
+            console.error(error);
+            await saveMessage('Ai', error.message);
+            const updatedConversation = await History.find();
+            socket.emit('receive', { conversation: updatedConversation });
+        } finally {
             socket.emit('loading', false);
         }
     });
