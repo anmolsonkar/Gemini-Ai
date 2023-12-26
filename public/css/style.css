@@ -75,21 +75,165 @@ header {
     position: fixed;
     z-index: 1;
     width: 100%;
-    justify-content: start;
+    justify-content: space-between;
     align-items: center;
+    justify-items: start;
     font-size: 24px;
     padding: .8rem;
     background-color: var(--background-color-light);
 
 }
 
-header>:first-child {
-    height: 2rem;
+.logo>a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color-light);
 }
 
-header>:nth-child(2) {
+#menu {
     height: 2rem;
-    margin-left: .7rem;
+    position: absolute;
+}
+
+#loading {
+    height: 2rem;
+    margin-left: 2.6rem;
+}
+
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdown {
+    background-color: red;
+    position: absolute;
+    right: 14px;
+    top: 56px;
+    padding: 1rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    display: none;
+    border-radius: .7rem;
+    background-color: white;
+    outline: none;
+    border: 1px solid #ddd;
+    color: #1E1F20;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+    transition: box-shadow 0.1s ease;
+}
+
+.dropdown>ul,
+.theme>ul {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}
+
+.dropdown>ul>a,
+.dropdown>ul>span,
+.theme>ul>a {
+    padding: 3px;
+    padding-left: 10px;
+    border-radius: 0.2rem;
+    padding-right: 10px;
+    color: #757575;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dropdown>ul>a:hover,
+.theme>ul>a:hover {
+    background-color: var(--background-color-light);
+}
+
+.theme>ul {
+    display: none;
+}
+
+.auth>img {
+    object-fit: cover;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.login,
+.register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+
+}
+
+.login>form,
+.register>form {
+    display: flex;
+    flex-direction: column;
+    border-radius: .7rem;
+    background-color: white;
+    outline: none;
+    border: 1px solid #ddd;
+    justify-items: start;
+    color: #1E1F20;
+    padding: 3rem;
+    width: 91vw;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+    transition: box-shadow 0.1s ease;
+}
+
+
+.login>form:hover,
+.register>form:hover {
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
+}
+
+
+
+.login>form>input,
+.register>form>input {
+    display: flex;
+    border-radius: .7rem;
+    outline: none;
+    width: 80vw;
+    margin: 1rem;
+    margin-left: -25px;
+    height: 3rem;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    color: #1E1F20;
+}
+
+.formfooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: -19px;
+    width: 81.5vw;
+
+}
+
+.formfooter>a {
+    color: #757575;
+    text-decoration: none;
+}
+
+.formfooter>a:hover {
+    text-decoration: underline;
+}
+
+#submit {
+    background-color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    margin: 1rem;
+
 }
 
 .sidebar {
@@ -282,8 +426,19 @@ button {
 
     }
 
-    header>:first-child {
+    .auth>img {
+        cursor: pointer;
+        margin-right: 0.5rem;
+
+    }
+
+
+    #menu {
         display: none;
+    }
+
+    #loading {
+        margin-left: 0.7rem;
     }
 
     .container {
@@ -300,6 +455,26 @@ button {
         margin-right: 0;
         border-radius: 1rem;
         grid-template-columns: minmax(250px, auto) 1fr;
+    }
+
+    .login>form,
+    .register>form {
+        width: 23vw;
+
+
+    }
+
+    .login>form>input,
+    .register>form>input {
+        width: 20vw;
+
+    }
+
+    .formfooter {
+        margin-left: -15px;
+        width: 20.4vw;
+
+
     }
 
     #footer {
@@ -337,12 +512,6 @@ button {
         background-color: var(--background-color-light);
     }
 
-    #settings>img {
-        object-fit: cover;
-        border-radius: 50%;
-        width: 2.5rem;
-        height: 2.5rem;
-    }
 
     #settings>p {
         margin-left: 1rem;

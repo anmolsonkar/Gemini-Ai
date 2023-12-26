@@ -6,44 +6,11 @@ const menu = document.getElementById("menu");
 const sidebar = document.querySelector(".sidebar");
 const loadingElement = document.querySelector('#loading');
 
-button.disabled = true;
-
 menu.addEventListener("click", () => {
     sidebar.classList.toggle("open");
 });
 
-
 document.addEventListener('DOMContentLoaded', function () {
-
-    const toggleButton = document.getElementById('settings');
-    toggleButton.addEventListener('click', toggleDarkMode);
-
-    function toggleDarkMode() {
-        const body = document.body;
-        const aside = document.querySelector("aside");
-        const main = document.querySelector("main");
-        const header = document.querySelector("header");
-        const menu = document.querySelector("#menu");
-
-        body.classList.toggle('dark-mode');
-        aside.classList.toggle('dark-mode');
-        main.classList.toggle('dark-mode');
-        header.classList.toggle('dark-mode');
-
-
-        menu.src = "img/menu-light.png"
-
-        const isDarkMode = body.classList.contains('dark-mode');
-
-        localStorage.setItem('darkMode', isDarkMode);
-    }
-
-    const isDarkModeStored = localStorage.getItem('darkMode');
-
-    if (isDarkModeStored === 'true') {
-        toggleDarkMode();
-    }
-
 
     function autoExpand() {
         const element = document.getElementById('input');
@@ -53,10 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     input.addEventListener('input', autoExpand);
 
-
 });
-
-
 
 function updateInputStatus() {
     if (input.value.trim() !== "") {
@@ -123,7 +87,7 @@ function displayMessages(messages) {
 
         const messageContent = isUser
             ? `<img src="${imgSrc}" alt="${altText}">
-               <div><pre>${item.message}</pre></div>`
+               <div>${item.message}</div>`
             : `<img src="${imgSrc}" alt="${altText}">
                <div id="show">${marked.parse(item.message)}</div>`;
 

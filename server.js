@@ -4,6 +4,7 @@ const socketIO = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+const routes = require("./routes/routes")
 
 require('dotenv').config();
 
@@ -26,6 +27,7 @@ app.use(express.static("public"));
 
     }
 })();
+
 
 const chatSchema = new mongoose.Schema({
     user: { type: String, index: true },
@@ -51,7 +53,6 @@ const MAX_CONVERSATION_HISTORY_SIZE = 50;
 if (history.length > MAX_CONVERSATION_HISTORY_SIZE) {
     history.shift();
 }
-
 
 
 (async () => {
@@ -90,7 +91,7 @@ io.on('connection', async (socket) => {
                 temperature: 0.7,
                 topK: 1,
                 topP: 1,
-                maxOutputTokens: 1024,
+                maxOutputTokens: 2048,
             };
 
             const safetySettings = [
@@ -148,9 +149,11 @@ io.on('connection', async (socket) => {
 });
 
 
-app.get('/', async (req, res) => {
-    res.render("index");
-});
+app.use('/', routes);
+
+app.use((req, res) => {
+    res.send("Error 404 file not found")
+})
 
 server.listen(3000, () => {
     console.log("Server is listening on port 3000");
