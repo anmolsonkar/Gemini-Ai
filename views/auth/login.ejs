@@ -16,15 +16,56 @@
 <body>
     <%-include('./header.ejs')%>
         <div class="login">
-            <form action="/login" method="POST">
-                <input type="email" name="Email" id="Email" placeholder="Email" required>
-                <input type="password" name="password" id="password" placeholder="Password" required>
+            <form>
+                <input type="email" name="email" placeholder="Email" required>
+                <span class="errorEmail"></span>
+                <input type="password" name="password" placeholder="Password" required>
+                <span class="errorPassword"></span>
                 <div class="formfooter">
                     <a href="/signup">Create account</a>
                     <button id="submit" type="submit">Submit</button>
                 </div>
             </form>
         </div>
+
+        <script>
+
+            const form = document.querySelector('form');
+            const errorEmail = document.querySelector('.errorEmail');
+            const errorPassword = document.querySelector('.errorPassword');
+
+            form.addEventListener('submit', async (e) => {
+
+                e.preventDefault();
+
+                errorEmail.textContent = '';
+                errorPassword.textContent = '';
+
+                const email = form.email.value;
+                const password = form.password.value;
+
+                try {
+                    const res = await fetch('/login', {
+                        method: 'POST',
+                        body: JSON.stringify({ email, password }),
+                        headers: { 'Content-Type': 'application/json' }
+                    })
+
+                    const data = await res.json();
+                    if (data.errors) {
+                        errorEmail.textContent = data.errors.email;
+                        errorPassword.textContent = data.errors.password;
+                    }
+                    if (data.user) {
+                        location.assign('/');
+                    }
+
+                } catch (error) {
+                    console.log(error)
+                }
+            })
+        </script>
+
 </body>
 
 </html>

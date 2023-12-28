@@ -5,6 +5,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 const routes = require("./routes/routes")
+const cookieParser = require('cookie-parser')
 
 require('dotenv').config();
 
@@ -16,7 +17,8 @@ const mongoose = require('mongoose');
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-
+app.use(express.json());
+app.use(cookieParser());
 
 (async () => {
     try {
@@ -88,7 +90,7 @@ io.on('connection', async (socket) => {
             socket.emit('loading', true);
 
             const generationConfig = {
-                temperature: 0.7,
+                temperature: 0.8,
                 topK: 1,
                 topP: 1,
                 maxOutputTokens: 2048,
@@ -149,7 +151,9 @@ io.on('connection', async (socket) => {
 });
 
 
-app.use('/', routes);
+app.use(routes);
+
+
 
 app.use((req, res) => {
     res.send("Error 404 file not found")

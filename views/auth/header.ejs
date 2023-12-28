@@ -1,3 +1,7 @@
+<div class="sidebar">
+    <div>
+    </div>
+</div>
 <header id="header">
     <div class="logo">
         <img src="./img/menu-dark.png" id="menu" alt="menu">
@@ -32,6 +36,21 @@
     const dropdown = document.querySelector(".dropdown");
     const theme = document.getElementById("theme");
     const themeoptions = document.getElementById("themeoptions");
+    const menu = document.getElementById("menu");
+    const sidebar = document.querySelector(".sidebar");
+
+    menu.addEventListener("click", (e) => {
+        e.stopPropagation();
+        sidebar.classList.toggle("open");
+    });
+
+    document.addEventListener('click', (e) => {
+        const isClickInsideMenu = menu.contains(e.target);
+
+        if (!isClickInsideMenu && sidebar.classList.contains("open")) {
+            sidebar.classList.remove("open");
+        }
+    });
 
     document.addEventListener('click', (e) => {
         if (e.target.id === 'profile') {
@@ -62,16 +81,11 @@
 
         function setTheme(theme) {
             const body = document.body;
-            const aside = document.querySelector('aside');
-            const main = document.querySelector('main');
             const header = document.querySelector('header');
             const menu = document.querySelector('#menu');
 
             body.classList.toggle('dark-mode', theme === 'dark');
-            aside.classList.toggle('dark-mode', theme === 'dark');
-            main.classList.toggle('dark-mode', theme === 'dark');
             header.classList.toggle('dark-mode', theme === 'dark');
-
             menu.src = theme === 'dark' ? 'img/menu-light.png' : 'img/menu-dark.png';
 
             localStorage.setItem('darkMode', theme === 'dark');

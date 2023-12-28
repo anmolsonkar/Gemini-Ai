@@ -2,13 +2,7 @@ const socket = io("http://localhost:3000/");
 
 const input = document.getElementById("input");
 const button = document.getElementById("send");
-const menu = document.getElementById("menu");
-const sidebar = document.querySelector(".sidebar");
 const loadingElement = document.querySelector('#loading');
-
-menu.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
-});
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -20,6 +14,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     input.addEventListener('input', autoExpand);
 
+
+    const lightButton = document.getElementById('light');
+    const darkButton = document.getElementById('dark');
+
+    lightButton.addEventListener('click', function () {
+        setTheme('light');
+    });
+
+    darkButton.addEventListener('click', function () {
+        setTheme('dark');
+    });
+
+    function setTheme(theme) {
+        const aside = document.querySelector('aside');
+        const main = document.querySelector('main');
+
+        aside.classList.toggle('dark-mode', theme === 'dark');
+        main.classList.toggle('dark-mode', theme === 'dark');
+
+
+        localStorage.setItem('darkMode', theme === 'dark');
+    }
+
+    const isDarkModeStored = localStorage.getItem('darkMode');
+    if (isDarkModeStored === 'true') {
+        setTheme('dark');
+    } else {
+        setTheme('light');
+    }
 });
 
 function updateInputStatus() {
