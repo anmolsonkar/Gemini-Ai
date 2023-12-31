@@ -9,11 +9,12 @@ const cookieParser = require('cookie-parser')
 
 require('dotenv').config();
 
-
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
 const mongoose = require('mongoose');
+
+const { History, saveMessage } = require('./models/chat')
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -30,23 +31,6 @@ app.use(cookieParser());
     }
 })();
 
-
-const chatSchema = new mongoose.Schema({
-    user: { type: String, index: true },
-    message: String,
-    timestamp: { type: Date, default: Date.now }
-});
-
-const History = mongoose.model('History', chatSchema);
-
-async function saveMessage(user, message) {
-    const history = new History({ user, message, timestamp: new Date() });
-    try {
-        await history.save();
-    } catch (err) {
-        console.error(err);
-    }
-}
 
 const history = [];
 
@@ -90,10 +74,10 @@ io.on('connection', async (socket) => {
             socket.emit('loading', true);
 
             const generationConfig = {
-                temperature: 0.8,
+                temperature: 0.7,
                 topK: 1,
                 topP: 1,
-                maxOutputTokens: 2048,
+                maxOutputTokens: 1024,
             };
 
             const safetySettings = [
@@ -152,8 +136,6 @@ io.on('connection', async (socket) => {
 
 
 app.use(routes);
-
-
 
 app.use((req, res) => {
     res.send("Error 404 file not found")
