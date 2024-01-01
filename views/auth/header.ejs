@@ -13,18 +13,32 @@
 
     <div class="dropdown">
         <ul>
-            <a href="/login">Login</a>
-            <span id="theme">Theme
-                <div class="theme">
-                    <ul id="themeoptions">
-                        <a id="light">Light</a>
-                        <a id="dark">Dark</a>
-                    </ul>
-                </div>
-            </span>
-            <a href="/#">Settings</a>
+            <% if(user){%>
+                <span>Welcome, <%=user.email %></span>
+                <span id="theme">Theme
+                    <div class="theme">
+                        <ul id="themeoptions">
+                            <a id="light">Light</a>
+                            <a id="dark">Dark</a>
+                        </ul>
+                    </div>
+                </span>
+                <a href="/logout">Logout</a>
+                <%} else {%>
+                    <a href="/login">Login</a>
+                    <span id="theme">Theme
+                        <div class="theme">
+                            <ul id="themeoptions">
+                                <a id="light">Light</a>
+                                <a id="dark">Dark</a>
+                            </ul>
+                        </div>
+                    </span>
+                    <% } %>
+
         </ul>
     </div>
+
     <div class="auth">
         <img id="profile" src="img/profile.jpg" alt="profile">
     </div>
