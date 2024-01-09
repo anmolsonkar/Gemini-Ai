@@ -24,7 +24,6 @@ app.use(cookieParser());
 (async () => {
     try {
         await mongoose.connect("mongodb+srv://anmolsonkar:Anmolmongo2023@anmoldb.ta9zg8t.mongodb.net/Gemini-Ai");
-        console.log("Connected")
     } catch (error) {
         console.log(error)
 

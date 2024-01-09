@@ -165,6 +165,13 @@ header {
     height: 2.5rem;
 }
 
+.errorPassword,
+.errorEmail {
+    color: #cc0000;
+    margin-left: -10px;
+}
+
+
 .login,
 .register {
     display: flex;
@@ -187,7 +194,7 @@ header {
     justify-items: start;
     color: #1E1F20;
     padding: 3rem;
-    width: 91vw;
+    width: 93vw;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
     transition: box-shadow 0.1s ease;
 }
@@ -461,6 +468,8 @@ button {
         margin-right: 0;
         border-radius: 1rem;
         grid-template-columns: minmax(250px, auto) 1fr;
+        height: 89.9vh;
+        min-width: 16.2rem;
     }
 
 
@@ -471,52 +480,42 @@ button {
         padding: 1.5rem;
         padding-left: 2.5rem;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        height: 80vh;
     }
 
     #footer {
         justify-content: end;
-        width: 79.4%;
+        width: 72vw;
     }
 
     #input {
         width: 100%;
     }
 
-
     .login>form,
     .register>form {
-        width: 23vw;
+        width: 48vw;
 
 
     }
 
     .login>form>input,
     .register>form>input {
-        width: 20vw;
+        width: 42vw;
 
     }
 
     .formfooter {
         margin-left: -15px;
-        width: 20.4vw;
+        width: 42vw;
     }
+
+
+
+
+
 }
 
-@media screen and (min-width:768px) {
-    aside {
-        height: 89.9vh;
-        min-width: 16.2rem;
-    }
-
-    main {
-
-        height: 80vh;
-    }
-
-    #footer {
-        width: 72vw;
-    }
-}
 
 @media screen and (min-width:768px) and (min-height:1024px) {
 
@@ -533,6 +532,7 @@ button {
     #footer {
         width: 63vw;
     }
+
 }
 
 @media screen and (min-width:800px) and (min-height:1280px) {
@@ -551,6 +551,77 @@ button {
         width: 64.6vw;
     }
 }
+
+@media screen and (min-width:1024px) {
+
+    .login>form,
+    .register>form {
+        width: 40vw;
+
+
+
+    }
+
+    .login>form>input,
+    .register>form>input {
+        width: 35.5vw;
+
+    }
+
+    .formfooter {
+        margin-left: -15px;
+        width: 35.5vw;
+    }
+
+}
+
+@media screen and (min-width:1280px) {
+
+    .login>form,
+    .register>form {
+        width: 25.9vw;
+
+
+    }
+
+    .login>form>input,
+    .register>form>input {
+        width: 22vw;
+
+    }
+
+    .formfooter {
+        margin-left: -15px;
+        width: 22vw;
+    }
+
+}
+
+
+@media screen and (min-width:1440px) {
+
+    .login>form,
+    .register>form {
+        width: 23.3vw;
+
+
+    }
+
+    .login>form>input,
+    .register>form>input {
+        width: 20vw;
+
+    }
+
+    .formfooter {
+        margin-left: -15px;
+        width: 20vw;
+    }
+
+}
+
+
+
 
 
 @media screen and (min-width:834px) and (min-height:1112px) {

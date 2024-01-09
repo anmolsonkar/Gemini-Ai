@@ -14,10 +14,15 @@ const handleErrors = (error) => {
         errors.password = "That password is incorrect";
     }
 
+    if (error.message === 'not matched') {
+        errors.password = "Passwords did not match";
+    }
+
     if (error.code === 11000) {
         errors.email = 'That email is already exists';
         return errors;
     }
+
     if (error.message.includes("user validation failed")) {
         Object.values(error.errors).forEach(({ properties }) => {
             errors[properties.path] = properties.message;
@@ -44,19 +49,24 @@ const login_get = (req, res) => {
 
 const signup_post = async (req, res) => {
 
-    const { email, password } = req.body;
+    const { email, password, cpassword } = req.body;
 
     try {
+
+        if (password !== cpassword) {
+            throw new Error("not matched")
+        }
+
         const user = await User.create({ email, password });
         const token = createToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
         res.status(200).json({ user: user._id });
 
     } catch (error) {
         const errors = handleErrors(error);
         res.status(400).json({ errors });
     }
-}
+};
 
 const login_post = async (req, res) => {
 
@@ -71,7 +81,6 @@ const login_post = async (req, res) => {
 
     } catch (error) {
         const errors = handleErrors(error);
-        console.log(errors)
         res.status(400).json({ errors });
     }
 
