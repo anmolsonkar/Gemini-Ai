@@ -11,6 +11,7 @@ require('dotenv').config();
 
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+const URI = process.env.MONGODB_URI;
 
 const mongoose = require('mongoose');
 
@@ -23,7 +24,7 @@ app.use(cookieParser());
 
 (async () => {
     try {
-        await mongoose.connect("mongodb+srv://anmolsonkar:Anmolmongo2023@anmoldb.ta9zg8t.mongodb.net/Gemini-Ai");
+        await mongoose.connect(URI);
     } catch (error) {
         console.log(error)
 
