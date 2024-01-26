@@ -74,10 +74,10 @@ io.on('connection', async (socket) => {
             socket.emit('loading', true);
 
             const generationConfig = {
-                temperature: 0.7,
-                topK: 1,
-                topP: 1,
-                maxOutputTokens: 1024,
+                "temperature": 0.9,
+                "top_p": 1,
+                "top_k": 1,
+                "max_output_tokens": 2048,
             };
 
             const safetySettings = [
