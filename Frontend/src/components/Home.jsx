@@ -1,11 +1,18 @@
-import { useEffect, useRef, useState, useLayoutEffect } from 'react';
+import { useEffect, useRef, useState, useLayoutEffect, useMemo } from 'react';
 import io from "socket.io-client";
 import Chat from './Chat';
-import { Send } from "@mui/icons-material";
+import { Clear, Send } from "@mui/icons-material";
 import Header from '../components/Header'
+import axios from 'axios';
+import { useTheme } from '../context/ThemeContext';
 
 
 const Home = () => {
+
+    const { darkMode } = useTheme();
+
+    const [hover, sethover] = useState(null)
+    const [refresh, setrefresh] = useState(false);
     const [conversation, setConversation] = useState('');
     const [value, setValue] = useState('');
     const [loading, setloading] = useState(false);
@@ -15,14 +22,18 @@ const Home = () => {
     const textareaRef = useRef(null);
     const divRef = useRef(null);
 
-	useEffect(() => {
-		const newSocket = io("http://localhost:4000");
-		setSocket(newSocket);
+    useEffect(() => {
+        const newSocket = io("http://localhost:4000");
+        setSocket(newSocket);
 
         return () => {
             newSocket.disconnect();
+            setrefresh(false);
         };
-    }, []);
+    }, [refresh]);
+
+    const memoizedConversation = useMemo(() => conversation, [conversation]);
+
 
     const sendMessage = (e) => {
         e.preventDefault();
@@ -61,6 +72,7 @@ const Home = () => {
             sendMessage(e);
         }
     };
+
 
     useEffect(() => {
         if (socket) {
@@ -117,39 +129,51 @@ const Home = () => {
         }
     }, [socket]);
 
-	useLayoutEffect(() => {
-		const div = divRef.current;
-		div.scrollTop = div.scrollHeight;
-	}, [memoizedConversation, live, loading]);
+    useLayoutEffect(() => {
+        const div = divRef.current;
+        div.scrollTop = div.scrollHeight;
+    }, [memoizedConversation, live, loading]);
 
-	const handleDelete = async (id) => {
-		try {
-			const res = await axios.post(`http://localhost:4000/chat/${id}`);
-			if (res.data.status === true) {
-				setrefresh(true)
-			}
-		} catch (error) {
-			console.log(error)
-		}
-	}
+    const handleDelete = async (id) => {
+        try {
+            const res = await axios.post(`http://localhost:4000/chat/${id}`);
+            if (res.data.status === true) {
+                setrefresh(true)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
-	const handleview = (id) => {
-		console.log(id)
-	}
+    const handleview = (id) => {
+        console.log(id)
+    }
 
     return (
 
-        <div className="flex flex-col min-h-screen">
-            <Header />
-            <div className="flex flex-grow lg:mt-[9vh] gap-4 lg:m-4 p-1 md:bg-white lg:bg-[#f1f3f4] lg:w-[71vw] xl:w-[98vw]">
-                <div className="bg-white min-w-[19vw]  lg:min-w-[25vw] xl:min-w-[18vw]  border rounded-xl drop-shadow-xl lg:flex hidden">
+        <div className={`flex flex-col min-h-screen ${darkMode ? 'bg-[#121212]' : 'bg-[#f1f3f4]'}`}>
+            <Header memoizedConversation={memoizedConversation} handleDelete={handleDelete} handleview={handleview} />
+            <div className={`flex flex-grow  lg:mt-[9vh] gap-4 lg:m-4 p-1  ${darkMode ? 'lg:bg-[#121212] md:bg-[#1e1e1e]' : 'lg:bg-[#f1f3f4] md:bg-white'} lg:w-[71vw] xl:w-[98vw]`}>
+                <div className={`${darkMode ? 'bg-[#1e1e1e] aside-dark' : 'bg-white aside-light'} min-w-[19vw] overflow-hidden overflow-y-auto lg:h-[89.3vh] xl:h-[87.9vh] lg:min-w-[25vw] xl:min-w-[18vw] rounded-xl drop-shadow-xl lg:block hidden`}>
+                    {memoizedConversation && memoizedConversation.map(message => (
+                        message.user === 'User' &&
+                        <div key={message._id} onClick={() => handleview(message._id)} className={`${darkMode ? 'bg-[#121212] text-white' : 'bg-[#f1f3f4]'} active:scale-[97%] duration-100  p-2 flex justify-between items-center m-3 cursor-pointer rounded-md lg:max-w-[20rem]`} onMouseEnter={() => sethover(message._id)}
+                            onMouseLeave={() => sethover(null)}>
+                            <button className='flex' style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                <img className='w-7 h-7' src="https://i.imgur.com/HLysXTu.gif" alt="Logo" />
 
+                                <span className='ml-2'>{message.message}</span>
+                            </button>
+                            {hover === message._id && <Clear onClick={() => handleDelete(message._id)} className='text-gray-300' />}
+                        </div>
+                    ))
+                    }
 
                 </div>
                 <div className="flex flex-col justify-between space-y-3 w-full">
-                    <div ref={divRef} className="bg-white lg:h-[80vh] lg:max-h-[80vh] xl:max-h-[81.5vh] 2xl:max-h-[79.5vh] lg:rounded-xl lg:drop-shadow-xl mt-[6.7vh] lg:mt-0 lg:overflow-hidden lg:overflow-y-auto container" >
-                        <Chat messages={conversation} live={live} loading={loading} />
+                    <div ref={divRef} className={` ${darkMode ? 'bg-[#1e1e1e] container-dark text-white' : 'bg-white container-light'} lg:h-[80vh] lg:max-h-[80vh] xl:max-h-[81.5vh] 2xl:max-h-[79.5vh] lg:rounded-xl lg:drop-shadow-xl mt-[6.7vh] lg:mt-0 lg:overflow-hidden lg:overflow-y-auto`} >
+                        <Chat messages={memoizedConversation} live={live} loading={loading} setrefresh={setrefresh} />
                     </div>
                     <form onSubmit={sendMessage} className="flex items-center lg:p-0 p-4 pt-0 ">
                         <textarea

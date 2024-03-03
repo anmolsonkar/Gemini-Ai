@@ -1,16 +1,17 @@
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { useTheme } from '../context/ThemeContext';
 
 function Chat({ messages, live, loading }) {
-
+    const { darkMode, toggleTheme } = useTheme();
     return (
 
         <div className='w-full'>
             {messages && messages.map(message => (
-                <div className='p-[2px] pl-4 pr-4 lg:last:pb-4 last:pb-16 first:pt-3 space-y-2' key={message._id}>
+                <div className='p-[2px] pl-4 pr-4 lg:last:pb-4 last:pb-16 first:pt-3 space-y-2' key={message._id} id={message._id}>
                     {message.user === 'User' && (
-                        <div className="p-2 bg-[#F1F3F4] min-w-[90vw] lg:min-w-[70vw]  items-center space-x-3 mt-2 rounded-md flex  ">
-                            <img className='w-8 h-8' src="https://i.imgur.com/izjKYfy.png" alt="Profile" />
+                        <div className={`p-2 ${darkMode ? 'bg-[#121212]' : 'bg-white'} min-w-[90vw] lg:min-w-[70vw]  items-center space-x-3 mt-2 rounded-md flex `}>
+                            <img className='w-8 h-8' src="https://i.imgur.com/nAll32z.png" alt="Profile" />
                             <p> {message.message}</p>
                         </div>
                     )}

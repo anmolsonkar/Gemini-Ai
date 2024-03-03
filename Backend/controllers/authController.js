@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const { History } = require('../models/chat');
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
@@ -71,7 +72,26 @@ const login_post = async (req, res) => {
     }
 };
 
+
+const deleteChatById = async (req, res) => {
+
+    try {
+
+        const deleteFromId = req.params.id;
+        await History.findByIdAndDelete(deleteFromId);
+        await History.findOneAndDelete({
+            _id: {
+                $gt: deleteFromId
+            }
+        })
+        res.status(200).json({ message: "Chats deleted successfully", status: true });
+    } catch (error) {
+        res.status(500).json({ message: "Unable to delete chats", error, status: false });
+    }
+}
+
 module.exports = {
     signup_post,
     login_post,
+    deleteChatById
 };

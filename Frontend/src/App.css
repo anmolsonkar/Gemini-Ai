@@ -1,56 +1,89 @@
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-size: 15px;
-    font-family: "Open Sans", sans-serif;
-    word-spacing: 1px;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-size: 15px;
+  font-family: "Open Sans", sans-serif;
+  word-spacing: 1px;
 }
 
 body,
 html {
-    background-color: white;
+  background-color: white;
 }
 @media screen and (min-width: 768px) {
-    body,
-    html {
-        background-color: #f1f3f4;
-    }
+  body,
+  html {
+    background-color: #f1f3f4;
+  }
 }
 
 pre {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 
 .zoom {
-    animation: zoom-in-out infinite 0.8s ease;
+  animation: zoom-in-out infinite 0.8s ease;
 }
 
 @keyframes zoom-in-out {
-    0% {
-        scale: 0%;
-    }
+  0% {
+    scale: 0%;
+  }
 
-    50% {
-        scale: 110%;
-    }
+  50% {
+    scale: 110%;
+  }
 
-    100% {
-        scale: 0%;
-    }
+  100% {
+    scale: 0%;
+  }
 }
 
-.container::-webkit-scrollbar {
-    width: 12px;
-    background-color: #f5f5f5;
+.container-light::-webkit-scrollbar {
+  width: 12px;
+  background-color: #f5f5f5;
 }
 
-.container::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #c1c1c1;
+.container-light::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #c1c1c1;
+}
+
+.container-dark::-webkit-scrollbar {
+  width: 12px;
+  background-color: #1e1e1e;
+}
+
+.container-dark::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #2f2f2f;
 }
 
 .input-container::-webkit-scrollbar {
-    width: 0;
+  width: 0;
+}
+
+.aside-light::-webkit-scrollbar {
+  width: 12px;
+  background-color: #f5f5f5;
+}
+
+.aside-light::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #c1c1c1;
+}
+
+.aside-dark::-webkit-scrollbar {
+  width: 12px;
+  background-color: #1e1e1e;
+}
+
+.aside-dark::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #2f2f2f;
 }
