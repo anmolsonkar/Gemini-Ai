@@ -15,9 +15,9 @@ const Home = () => {
     const textareaRef = useRef(null);
     const divRef = useRef(null);
 
-    useEffect(() => {
-        const newSocket = io("http://localhost:4000");
-        setSocket(newSocket);
+	useEffect(() => {
+		const newSocket = io("http://localhost:4000");
+		setSocket(newSocket);
 
         return () => {
             newSocket.disconnect();
@@ -117,10 +117,26 @@ const Home = () => {
         }
     }, [socket]);
 
-    useLayoutEffect(() => {
-        const div = divRef.current;
-        div.scrollTop = div.scrollHeight;
-    }, [conversation, live, loading]);
+	useLayoutEffect(() => {
+		const div = divRef.current;
+		div.scrollTop = div.scrollHeight;
+	}, [memoizedConversation, live, loading]);
+
+	const handleDelete = async (id) => {
+		try {
+			const res = await axios.post(`http://localhost:4000/chat/${id}`);
+			if (res.data.status === true) {
+				setrefresh(true)
+			}
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+
+	const handleview = (id) => {
+		console.log(id)
+	}
 
     return (
 
