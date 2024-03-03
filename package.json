@@ -6,12 +6,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {},
-  "scripts": {
-    "Frontend": "cd Frontend && npm run dev",
-    "Backend": "cd Backend && npm run start",
-    "dev": "concurrently --kill-others-on-fail \"npm run Backend\" \"npm run Frontend\"",
-    "heroku-postbuild": "cd Frontend && npm install && npm run build"
-  },
+  "scripts": {},
   "author": "Anmol Sonkar",
   "license": "ISC",
   "description": ""
