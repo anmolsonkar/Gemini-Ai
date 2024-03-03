@@ -1,1 +1,15 @@
-{}
+{
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "name": "gemini-ai",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "concurrently \"cd Frontend && npm run dev\" \"cd Backend && npm run start\""
+  },
+  "author": "Anmol Sonkar",
+  "license": "ISC",
+  "description": ""
+}
