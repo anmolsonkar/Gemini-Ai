@@ -4,6 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useTheme } from '../context/ThemeContext';
 
 function Login() {
     const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ function Login() {
 
     });
 
+    const { darkMode } = useTheme();
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -57,11 +59,11 @@ function Login() {
     };
 
     return (
-        <div className="flex h-screen flex-grow justify-center items-center text-lg">
+        <div className={`flex h-screen flex-grow justify-center items-center text-lg ${darkMode ? 'bg-[#121212]' : 'bg-[#F1F3F4]'}`}>
 
             <form
-                className="flex flex-col pt-10 pb-10 p-5 space-y-5 rounded-md bg-white shadow hover:shadow-md duration-200 ease-in-out 
-                    lg:w-[22vw]"
+                className={`flex flex-col pt-10 pb-10 p-5 space-y-5 rounded-md ${darkMode ? 'bg-[#1e1e1e]' : 'bg-white'} shadow hover:shadow-md duration-200 ease-in-out 
+                    lg:w-[22vw]`}
                 onSubmit={handleSubmit}
             >
 
@@ -87,7 +89,7 @@ function Login() {
                     />
 
                     <div
-                        className='text-gray-400 cursor-pointer'
+                        className={`cursor-pointer ${darkMode ? 'text-white' : 'text-gray-400'}`}
                         onClick={() => setShow(show === "password" ? "text" : "password")}
                     >
                         {show === "password" ? <VisibilityOff /> : <Visibility />}
@@ -96,7 +98,7 @@ function Login() {
 
 
                 <div className="flex justify-between items-center pt-1 gap-3">
-                    <Link className='text-gray-400 hover:underline pl-2' to="/Signup">Don't have an account?</Link>
+                    <Link className={`${darkMode ? 'text-white' : 'text-gray-400'} hover:underline pl-2'`} to="/Signup">Don't have an account?</Link>
                     <button
                         type="submit"
                         className="p-1 rounded-md transition-all w-fit bg-indigo-600 text-white active:bg-indigo-700"
@@ -116,9 +118,9 @@ function Login() {
                     </button>
                 </div>
 
-            </form>
+            </form >
             <ToastContainer autoClose={3000} />
-        </div>
+        </div >
     );
 }
 

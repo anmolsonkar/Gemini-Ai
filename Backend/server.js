@@ -30,11 +30,6 @@ const URI = process.env.MONGODB_URI;
 })();
 
 const history = [];
-const MAX_CONVERSATION_HISTORY_SIZE = 50;
-
-if (history.length > MAX_CONVERSATION_HISTORY_SIZE) {
-    history.shift();
-}
 
 (async () => {
     const messages = await History.find();
