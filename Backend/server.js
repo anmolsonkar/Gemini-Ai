@@ -10,6 +10,8 @@ const routes = require('./routes/routers');
 const { History, saveMessage } = require('./models/chat.js');
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
 
+const port = process.env.PORT || 4000;
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -136,6 +138,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/", routes);
 
-server.listen(4000, () => {
-    console.log('Server is listening on port 4000');
+server.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
 });
