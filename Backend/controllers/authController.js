@@ -51,7 +51,7 @@ const signup_post = async (req, res, next) => {
 
         const user = await User.create({ email, password });
         const token = createToken(user._id);
-        res.cookie('jwt', token, { withCredentials: true, httpOnly: true, secure: true, maxAge: maxAge * 1000 });
+        res.cookie('jwt', token, { withCredentials: true, sameSite: 'none', httpOnly: true, domain: "http://localhost:3000", secure: true, maxAge: maxAge * 1000 });
         res.status(201).json({ user: user._id, created: true });
     } catch (error) {
         const errors = handleErrors(error);
@@ -64,7 +64,7 @@ const login_post = async (req, res) => {
     try {
         const user = await User.login(email, password);
         const token = createToken(user._id);
-        res.cookie("jwt", token, { withCredentials: true, httpOnly: true, secure: true, maxAge: maxAge * 1000 });
+        res.cookie('jwt', token, { withCredentials: true, sameSite: 'none', httpOnly: true, domain: "http://localhost:3000", secure: true, maxAge: maxAge * 1000 });
         res.status(200).json({ user: user._id, status: true });
     } catch (error) {
         const errors = handleErrors(error);
