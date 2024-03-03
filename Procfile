@@ -1,1 +1,1 @@
-web: concurrently "cd Frontend && npm run dev" "cd Backend && npm run start"
+web: concurrently "cd Frontend && npm i && npm run dev" "cd Backend && npm i && npm run start"
