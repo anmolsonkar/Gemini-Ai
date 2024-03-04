@@ -16,7 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ['http://localhost:3000', 'https://geminibot.netlify.app', 'https://geminichat-88603c7bb069.herokuapp.com'],
+        origin: ['http://localhost:3000', 'https://geminibot.netlify.app', 'https://geminichat-88603c7bb069.herokuapp.com','https://geminis-d180e5f1b499.herokuapp.com'],
 
     }
 });
@@ -124,7 +124,7 @@ io.on('connection', async (socket) => {
 
 app.use(
     cors({
-        origin: ['http://localhost:3000', 'https://geminibot.netlify.app', 'https://geminichat-88603c7bb069.herokuapp.com'],
+        origin: ['http://localhost:3000', 'https://geminibot.netlify.app', 'https://geminichat-88603c7bb069.herokuapp.com','https://geminis-d180e5f1b499.herokuapp.com'],
         methods: ["GET", "POST"],
         credentials: true,
     })
