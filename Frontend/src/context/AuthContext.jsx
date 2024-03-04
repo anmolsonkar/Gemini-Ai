@@ -37,7 +37,7 @@ export const AuthContextProvider = ({ children }) => {
             try {
                 if (cookies.jwt) {
                     const { data } = await axios.post(
-                        "http://localhost:4000",
+                        "https://geminis-d180e5f1b499.herokuapp.com",
                         {},
                         { withCredentials: true }
                     );

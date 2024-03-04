@@ -28,7 +28,7 @@ function Login() {
         setTimeout(async () => {
             try {
 
-                const res = await axios.post('http://localhost:4000/login', {
+                const res = await axios.post('https://geminis-d180e5f1b499.herokuapp.com/login', {
                     ...form
                 }, {
                     withCredentials: true,
