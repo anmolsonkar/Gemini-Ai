@@ -87,6 +87,7 @@ function SignUp() {
                         onChange={handleChange}
                         placeholder="Password"
                         required
+                        autoComplete="true"
                     />
 
                     <div
@@ -106,6 +107,7 @@ function SignUp() {
                         onChange={handleChange}
                         placeholder="Confirm Password"
                         required
+                        autoComplete="true"
                     />
 
                     <div className={`cursor-pointer ${darkMode ? 'text-white' : 'text-gray-400'}`}

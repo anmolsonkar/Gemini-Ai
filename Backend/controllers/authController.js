@@ -62,7 +62,7 @@ const signup_post = async (req, res, next) => {
 const login_post = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.login(email, password); zz
+        const user = await User.login(email, password);
         const token = createToken(user._id);
         res.cookie("jwt", token, { httpOnly: false, maxAge: maxAge * 1000 });
         res.status(200).json({ user: user._id, status: true });
