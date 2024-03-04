@@ -22,7 +22,7 @@ const authReducer = (state, action) => {
 };
 
 export const AuthContextProvider = ({ children }) => {
-    const [cookies, , removeCookie] = useCookies(["__Secure-jwt"]);
+    const [cookies, , removeCookie] = useCookies(["jwt"]);
 
     const [state, dispatch] = useReducer(authReducer, {
         authUser: null
@@ -35,7 +35,7 @@ export const AuthContextProvider = ({ children }) => {
     useEffect(() => {
         const verifyUser = async () => {
             try {
-                if (cookies.__Secure-jwt) {
+                if (cookies.jwt) {
                     const { data } = await axios.post(
                         "https://geminis-d180e5f1b499.herokuapp.com",
                         {},
@@ -44,10 +44,10 @@ export const AuthContextProvider = ({ children }) => {
                     if (data.status) {
                         dispatch({
                             type: "SET_AUTH",
-                            payload: cookies.__Secure-jwt
+                            payload: cookies.jwt
                         });
                     } else {
-                        removeCookie("__Secure-jwt");
+                        removeCookie("jwt");
                     }
                 } else {
                     dispatch({
@@ -57,12 +57,12 @@ export const AuthContextProvider = ({ children }) => {
                 }
             } catch (error) {
                 console.error("Error verifying user:", error);
-                removeCookie("__Secure-jwt");
+                removeCookie("jwt");
             }
         };
 
         verifyUser();
-    }, [cookies.__Secure-jwt, removeCookie, navigate]);
+    }, [cookies.jwt, removeCookie, navigate]);
 
     return (
         <AuthContext.Provider value={{ authUser }}>

@@ -23,7 +23,7 @@ const Home = () => {
 	const divRef = useRef(null);
 
 	useEffect(() => {
-		const newSocket = io("https://geminis-d180e5f1b499.herokuapp.com");
+		const newSocket = io("http://localhost:4000");
 		setSocket(newSocket);
 
 		return () => {
@@ -136,7 +136,7 @@ const Home = () => {
 
 	const handleDelete = async (id) => {
 		try {
-			const res = await axios.post(`https://geminis-d180e5f1b499.herokuapp.com/chat/${id}`);
+			const res = await axios.post(`http://localhost:4000/chat/${id}`);
 			if (res.data.status === true) {
 				setrefresh(true)
 			}
