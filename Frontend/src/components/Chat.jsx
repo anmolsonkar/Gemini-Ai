@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import { useTheme } from '../context/ThemeContext';
 
 function Chat({ messages, live, loading }) {
-    const { darkMode, toggleTheme } = useTheme();
+    const { darkMode} = useTheme();
     return (
 
         <div className='w-full'>
