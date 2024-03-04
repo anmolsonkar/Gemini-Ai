@@ -29,7 +29,7 @@ function SignUp() {
         setTimeout(async () => {
             try {
 
-                const res = await axios.post('https://geminis-d180e5f1b499.herokuapp.com/signup', {
+                const res = await axios.post('http://localhost:4000/signup', {
                     ...form
                 }, {
                     withCredentials: true,
